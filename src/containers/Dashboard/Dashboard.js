@@ -1,30 +1,22 @@
 import React, { useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import BarSlider from "components/BarSlider";
 import CommonPadding from "components/CommonPadding";
 import PaddedCell from "components/PaddedCell";
+import PressureTile from "components/PressureTile";
+import TemperatureTile from "components/TemperatureTile";
 
 import styles from "./styles.css";
 
 const Dashboard = () => {
-	const [ pressure, setPressure ] = useState(970);
-
-	const pressureCell = useMemo(() => {
-		return (
-			<PaddedCell>
-				<h2>Pressure</h2>
-				<BarSlider minValue="970" maxValue="1030" onChange={({ value }) => setPressure(value)} value={pressure} />
-			</PaddedCell>
-		);
-	}, [ pressure ]);
+	const pressureTile = useMemo(() => <PressureTile />, []);
 	const chanceOfRainCell = useMemo(() => <PaddedCell>Chance of Rain</PaddedCell>, []);
-	const temperatureCell = useMemo(() => <PaddedCell>Temperature</PaddedCell>, []);
+	const temperatureCell = useMemo(() => <TemperatureTile />, []);
 	const amountOfRainCell = useMemo(() => <PaddedCell>Amount of Rain</PaddedCell>, []);
 
 	const renderDesktopLayout = (
 		<div className={`${styles.layout} ${styles.desktop}`}>
 			<div className={styles.row}>
-				{pressureCell}
+				{pressureTile}
 				{chanceOfRainCell}
 			</div>
 
@@ -37,7 +29,7 @@ const Dashboard = () => {
 
 	const renderMobileLayout = (
 		<div className={`${styles.layout} ${styles.mobile}`}>
-			{pressureCell}
+			{pressureTile}
 			{temperatureCell}
 			{chanceOfRainCell}
 			{amountOfRainCell}
