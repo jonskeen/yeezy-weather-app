@@ -1,0 +1,13 @@
+:root {
+    --common-padding-d: 8vw;
+    --common-padding-m: 3vw;
+
+    --spacing-h-base: 1rem;                             /* 16 px */
+    --spacing-h-0-5x: calc(var(--spacing-h-base) / 2);  /* 8 px */
+
+    --spacing-v-base: 1rem;                             /* 16px */
+    --spacing-v-0-5x: calc(var(--spacing-v-base) / 2);  /* 8 px */
+
+    --border-border-default: solid 1px;
+    --border-radius-default: 10px;
+}

@@ -12,4 +12,5 @@
 
     /* applied colors */
     --color-link: var(--color-primary);
+    --color-border-default: var(--color-light);
 }

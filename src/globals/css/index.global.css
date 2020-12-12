@@ -1,7 +1,11 @@
 body {
     background-color: white;
     font-family: var(--font-body);
-    font-size: var(--font-size-default);
+    font-size: var(--font-size-default-d);
+}
+
+* {
+    box-sizing: border-box;
 }
 
 a,
