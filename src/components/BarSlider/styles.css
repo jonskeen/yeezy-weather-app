@@ -1,0 +1,12 @@
+.barSlider {
+    width: 500px;
+    height:50px;
+    border: solid 1px darkred;
+    position: relative;
+}
+
+.handleWrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
