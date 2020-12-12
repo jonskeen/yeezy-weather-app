@@ -1,0 +1,17 @@
+.loadingIndicator {
+    animation-duration: 750ms;
+    animation-iteration-count: infinite;
+    animation-name: spin;
+    animation-timing-function: linear;
+    background-color: transparent;
+    border: solid 3px var(--color-dark);
+    border-bottom: none;
+    border-radius: var(--spacing-v-base);
+    height: var(--spacing-v-base);
+    width: var(--spacing-h-base);
+}
+
+@keyframes spin {
+    from { transform: rotate(0); }
+    to {transform: rotate(360deg) }
+}

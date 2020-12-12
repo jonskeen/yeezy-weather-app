@@ -1,17 +1,67 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
+import { isNonEmptyString, fetchRainfall } from "utils";
 import CommonPadding from "components/CommonPadding";
 import PaddedCell from "components/PaddedCell";
 import PressureTile from "components/PressureTile";
 import TemperatureTile from "components/TemperatureTile";
+import LoadingIndicator from "components/LoadingIndicator";
 
 import styles from "./styles.css";
 
 const Dashboard = () => {
+	const [ isLoading, setIsLoading ] = useState(false);
 	const pressureTile = useMemo(() => <PressureTile />, []);
-	const chanceOfRainCell = useMemo(() => <PaddedCell>Chance of Rain</PaddedCell>, []);
-	const temperatureCell = useMemo(() => <TemperatureTile />, []);
-	const amountOfRainCell = useMemo(() => <PaddedCell>Amount of Rain</PaddedCell>, []);
+	const temperatureTile = useMemo(() => <TemperatureTile />, []);
+
+	const chanceOfRainCell = useMemo(() => {
+		return (
+			<PaddedCell>
+				<h2>Chance of Rain</h2>
+				{isLoading
+					? (
+						<LoadingIndicator/>
+					)
+					: ""
+				}
+			</PaddedCell>
+		);
+	}, [ isLoading ]);
+
+	const amountOfRainCell = useMemo(() => {
+		return (
+			<PaddedCell>
+				<h2>Amount of Rain</h2>
+				{isLoading
+					? (
+						<LoadingIndicator/>
+					)
+					: ""
+				}
+			</PaddedCell>
+		);
+	}, [ isLoading ]);
+
+	const [ rainfallByDay, setRainfallByDay ] = useState([]);
+
+	const getRainfall = () => {
+		setIsLoading(true);
+
+		fetchRainfall()
+			.then(data => {
+				setRainfallByDay(data);
+			})
+			.catch(error => {
+				const message = isNonEmptyString(error)
+					? error
+					: error?.message;
+
+				console.error(message);
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
+	};
 
 	const renderDesktopLayout = (
 		<div className={`${styles.layout} ${styles.desktop}`}>
@@ -21,7 +71,7 @@ const Dashboard = () => {
 			</div>
 
 			<div className={styles.row}>
-				{temperatureCell}
+				{temperatureTile}
 				{amountOfRainCell}
 			</div>
 		</div>
@@ -30,11 +80,19 @@ const Dashboard = () => {
 	const renderMobileLayout = (
 		<div className={`${styles.layout} ${styles.mobile}`}>
 			{pressureTile}
-			{temperatureCell}
+			{temperatureTile}
 			{chanceOfRainCell}
 			{amountOfRainCell}
 		</div>
 	);
+
+	useEffect(() => {
+		const doIt = () => {
+			getRainfall();
+		}
+
+		doIt();
+	}, []);
 
     return (
 		<div data-component="Dashboard" className={styles.dashboard}>
