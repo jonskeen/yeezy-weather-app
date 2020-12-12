@@ -1,5 +1,7 @@
 .handle {
-    width: 50px;
-    height: 50px;
-    border: solid 1px black;
+    width: 1em;
+    height: 1em;
+    background-color: var(--color-dark);
+    border: solid 1px var(--color-dark);
+    border-radius: 50%;
 }

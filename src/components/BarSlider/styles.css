@@ -1,12 +1,14 @@
 .barSlider {
-    width: 500px;
-    height:50px;
+    background-color: darkred;
+    width: 100%;
+    height: .625em;
     border: solid 1px darkred;
     position: relative;
+    border-radius: 1em;
 }
 
 .handleWrapper {
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 50%;
+    transform: translate3d(0, -50%, 0);
 }
