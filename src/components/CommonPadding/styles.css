@@ -1,0 +1,11 @@
+@media(--small) {
+    .mobile:not(:empty) {
+        padding: 0 var(--common-padding-m);
+    }
+}
+
+@media(--medium) {
+    .desktop:not(:empty) {
+        padding: 0 var(--common-padding-d);
+    }
+}

@@ -1,0 +1,6 @@
+.paddedCell {
+    border: var(--border-border-default);
+    border-color: var(--color-border-default);
+    border-radius: var(--border-radius-default);
+    padding: var(--spacing-v-base) var(--spacing-h-base);
+}
