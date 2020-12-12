@@ -11,38 +11,34 @@ const Dashboard = () => {
 	const temperatureCell = useMemo(() => <PaddedCell>Temperature</PaddedCell>, []);
 	const amountOfRainCell = useMemo(() => <PaddedCell>Amount of Rain</PaddedCell>, []);
 
-	const renderDesktopLayout = () => {
-		return (
-			<div className={`${styles.layout} ${styles.desktop}`}>
-				<div className={styles.row}>
-					{pressureCell}
-					{chanceOfRainCell}
-				</div>
-
-				<div className={styles.row}>
-					{temperatureCell}
-					{amountOfRainCell}
-				</div>
-			</div>
-		);
-	};
-
-	const renderMobileLayout = () => {
-		return (
-			<div className={`${styles.layout} ${styles.mobile}`}>
+	const renderDesktopLayout = (
+		<div className={`${styles.layout} ${styles.desktop}`}>
+			<div className={styles.row}>
 				{pressureCell}
-				{temperatureCell}
 				{chanceOfRainCell}
+			</div>
+
+			<div className={styles.row}>
+				{temperatureCell}
 				{amountOfRainCell}
 			</div>
-		)
-	};
+		</div>
+	);
+
+	const renderMobileLayout = (
+		<div className={`${styles.layout} ${styles.mobile}`}>
+			{pressureCell}
+			{temperatureCell}
+			{chanceOfRainCell}
+			{amountOfRainCell}
+		</div>
+	);
 
     return (
 		<div data-component="Dashboard" className={styles.dashboard}>
 			<CommonPadding>
-				{renderMobileLayout()}
-				{renderDesktopLayout()}
+				{renderMobileLayout} {/* separate layouts allow cell reordering without breaking screen-reader flows */}
+				{renderDesktopLayout}
 			</CommonPadding>
 		</div>
     );
