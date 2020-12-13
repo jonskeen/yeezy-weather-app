@@ -27,13 +27,11 @@ const Dashboard = () => {
 	}, [ handlePressureChange ]);
 
 	const temperatureTile = useMemo(() => {
-		return <TemperatureTile onChange={handleTemperatureChange} />
+		return <TemperatureTile onChange={handleTemperatureChange} />;
 	}, [ handleTemperatureChange ]);
 
 	const amountOfRainCell = useMemo(() => {
-		return (
-			<RainfallAmountTile loading={isLoading} data={rainfallByDay} />
-		);
+		return <RainfallAmountTile loading={isLoading} data={rainfallByDay} />;
 	}, [ isLoading, rainfallByDay ]);
 
 	const chanceOfRainTile = useMemo(() => {

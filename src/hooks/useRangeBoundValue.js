@@ -2,22 +2,35 @@ import { useCallback, useState } from "react";
 import { isNumber } from "utils";
 
 export const useRangeBoundValue = (initialValue, minValue, maxValue) => {
-	const avgValue = Math.round((minValue + maxValue) / 2)
+	const isValueTooHigh = useCallback(value => {
+		return value > maxValue;
+	}, [ maxValue]);
 
-	const isValueValid = useCallback(value => {
-		return isNumber(value) && value >= minValue && value <= maxValue;
-	}, [ maxValue, minValue ]);
+	const isValueTooLow = useCallback(value => {
+		return value < minValue;
+	}, [ minValue]);
 
-	const [ value, _setValue ] = useState(isValueValid(initialValue) ? initialValue : avgValue);
+	const getConstrainedValue = useCallback(suggestedValue => {
+		if (!isNumber(suggestedValue)) {
+			return Math.round((minValue + maxValue) / 2)
+		}
+
+		if (isValueTooLow(suggestedValue)) {
+			return minValue;
+		}
+
+		if (isValueTooHigh(suggestedValue)) {
+			return maxValue;
+		}
+
+		return suggestedValue;
+	}, [ isValueTooHigh, isValueTooLow, maxValue, minValue ]);
+
+	const [ value, _setValue ] = useState(getConstrainedValue(initialValue));
 
 	const setValue = useCallback(value => {
-		if (isValueValid(value)) {
-			_setValue(value);
-		} else {
-			console.warn(`Invalid value ${value} provided, use a value between ${minValue} and ${maxValue} inclusive.`)
-		}
-	}, [ isValueValid, minValue, maxValue ]);
-
+		_setValue(getConstrainedValue(value));
+	}, [ getConstrainedValue ]);
 
 	return [ value, setValue ];
 }
