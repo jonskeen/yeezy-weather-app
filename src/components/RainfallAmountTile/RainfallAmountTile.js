@@ -19,16 +19,13 @@ const RainfallAmountTile = ({ loading, data }) => {
 					: (
 						<VictoryChart domainPadding={20} padding={{ left: 55, top: 10, bottom: 30, right: 10 }}>
 							<VictoryAxis tickFormat={x => moment().add(x, "days").format("dd")} />
-							<VictoryAxis
-								dependentAxis
-								label={"l\\m2"}
-								style={{
+							<VictoryAxis dependentAxis label={"l\\m2"} style={{
 									axisLabel: { padding: 40 }
 								}}
 							/>
 							<VictoryBar data={data} x="day" y="amount" style={{
-				                data: { fill: "rebeccapurple" }
-				            }}
+					                data: { fill: "#004c8e" }
+					            }}
 							/>
 						</VictoryChart>
 					)

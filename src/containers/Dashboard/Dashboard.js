@@ -1,11 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
-import PropTypes from "prop-types";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { isNonEmptyString, fetchRainfall } from "utils";
+import ChanceOfRainTile from "components/ChanceOfRainTile";
 import CommonPadding from "components/CommonPadding";
-import PaddedCell from "components/PaddedCell";
 import PressureTile from "components/PressureTile";
 import TemperatureTile from "components/TemperatureTile";
-import LoadingIndicator from "components/LoadingIndicator";
 import RainfallAmountTile from "components/RainfallAmountTile";
 
 import styles from "./styles.css";
@@ -13,8 +11,24 @@ import styles from "./styles.css";
 const Dashboard = () => {
 	const [ isLoading, setIsLoading ] = useState(false);
 	const [ rainfallByDay, setRainfallByDay ] = useState([]);
-	const pressureTile = useMemo(() => <PressureTile />, []);
-	const temperatureTile = useMemo(() => <TemperatureTile />, []);
+	const [ pressure, setPressure ] = useState(1000);
+	const [ temperature, setTemperature ] = useState(20);
+
+	const handlePressureChange = useCallback(({ value }) => {
+		setPressure(value);
+	}, []);
+
+	const handleTemperatureChange = useCallback(({ value }) => {
+		setTemperature(value);
+	}, []);
+
+	const pressureTile = useMemo(() => {
+		return <PressureTile onChange={handlePressureChange} />;
+	}, [ handlePressureChange ]);
+
+	const temperatureTile = useMemo(() => {
+		return <TemperatureTile onChange={handleTemperatureChange} />
+	}, [ handleTemperatureChange ]);
 
 	const amountOfRainCell = useMemo(() => {
 		return (
@@ -22,19 +36,15 @@ const Dashboard = () => {
 		);
 	}, [ isLoading, rainfallByDay ]);
 
-	const chanceOfRainCell = useMemo(() => {
+	const chanceOfRainTile = useMemo(() => {
 		return (
-			<PaddedCell>
-				<h2>Amount of Rain</h2>
-				{isLoading
-					? (
-						<LoadingIndicator/>
-					)
-					: ""
-				}
-			</PaddedCell>
+			<ChanceOfRainTile loading={isLoading}
+			                  data={rainfallByDay}
+			                  pressure={pressure}
+			                  temperature={temperature}
+			/>
 		);
-	}, [ isLoading ]);
+	}, [ isLoading, rainfallByDay, pressure, temperature ]);
 
 
 	const getRainfall = () => {
@@ -60,7 +70,7 @@ const Dashboard = () => {
 		<div className={`${styles.layout} ${styles.desktop}`}>
 			<div className={styles.row}>
 				{pressureTile}
-				{chanceOfRainCell}
+				{chanceOfRainTile}
 			</div>
 
 			<div className={styles.row}>
@@ -74,7 +84,7 @@ const Dashboard = () => {
 		<div className={`${styles.layout} ${styles.mobile}`}>
 			{pressureTile}
 			{temperatureTile}
-			{chanceOfRainCell}
+			{chanceOfRainTile}
 			{amountOfRainCell}
 		</div>
 	);
@@ -96,7 +106,5 @@ const Dashboard = () => {
 		</div>
     );
 };
-
-Dashboard.propTypes = {};
 
 export default Dashboard;
