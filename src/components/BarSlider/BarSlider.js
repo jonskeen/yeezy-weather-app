@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React, { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { isFunction } from "utils";
 import Hammer from "react-hammerjs";
@@ -31,15 +31,15 @@ const BarSlider = ({
 		return sliderWidth * dragPercent;
 	}, [ minValue, range, sliderWidth, value ]);
 
-	const setValueFromPosition = currentX => {
+	const setValueFromPosition = useCallback(currentX => {
 		const percentDragged = currentX / sliderWidth;
 		const dragValue = range * percentDragged;
-		const value = minValue + dragValue;
+		const updatedValue = minValue + dragValue;
 
-		if (isFunction(onChange)) {
-			onChange({ value })
+		if (updatedValue !== value && isFunction(onChange)) {
+			onChange({ value: updatedValue })
 		}
-	};
+	}, [ minValue, onChange, range, sliderWidth, value ]);
 
 	const handlePan = a => {
 		let updatedX = initialX + a.deltaX;
@@ -55,7 +55,7 @@ const BarSlider = ({
 		setValueFromPosition(absolutePosition);
 	};
 
-	const handlePanStart = a => {
+	const handlePanStart = () => {
 		if (handleRef.current) {
 			const { left } = handleRef.current.getClientRects()[0] || {};
 
