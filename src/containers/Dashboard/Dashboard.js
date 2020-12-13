@@ -11,8 +11,8 @@ import styles from "./styles.css";
 const Dashboard = () => {
 	const [ isLoading, setIsLoading ] = useState(false);
 	const [ rainfallByDay, setRainfallByDay ] = useState([]);
-	const [ pressure, setPressure ] = useState(1000);
-	const [ temperature, setTemperature ] = useState(20);
+	const [ pressure, setPressure ] = useState(null);
+	const [ temperature, setTemperature ] = useState(null);
 
 	const handlePressureChange = useCallback(({ value }) => {
 		setPressure(value);

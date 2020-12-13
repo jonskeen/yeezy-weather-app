@@ -9,3 +9,5 @@ export const isNonEmptyString = value => {
 }
 
 export const isNumber = value => typeof value === "number" && isFinite(value);
+
+export const isNonEmptyObject = value => typeof value === "object" && Object.keys(value).length > 0;
