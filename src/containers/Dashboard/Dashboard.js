@@ -6,29 +6,23 @@ import PaddedCell from "components/PaddedCell";
 import PressureTile from "components/PressureTile";
 import TemperatureTile from "components/TemperatureTile";
 import LoadingIndicator from "components/LoadingIndicator";
+import RainfallAmountTile from "components/RainfallAmountTile";
 
 import styles from "./styles.css";
 
 const Dashboard = () => {
 	const [ isLoading, setIsLoading ] = useState(false);
+	const [ rainfallByDay, setRainfallByDay ] = useState([]);
 	const pressureTile = useMemo(() => <PressureTile />, []);
 	const temperatureTile = useMemo(() => <TemperatureTile />, []);
 
-	const chanceOfRainCell = useMemo(() => {
-		return (
-			<PaddedCell>
-				<h2>Chance of Rain</h2>
-				{isLoading
-					? (
-						<LoadingIndicator/>
-					)
-					: ""
-				}
-			</PaddedCell>
-		);
-	}, [ isLoading ]);
-
 	const amountOfRainCell = useMemo(() => {
+		return (
+			<RainfallAmountTile loading={isLoading} data={rainfallByDay} />
+		);
+	}, [ isLoading, rainfallByDay ]);
+
+	const chanceOfRainCell = useMemo(() => {
 		return (
 			<PaddedCell>
 				<h2>Amount of Rain</h2>
@@ -42,7 +36,6 @@ const Dashboard = () => {
 		);
 	}, [ isLoading ]);
 
-	const [ rainfallByDay, setRainfallByDay ] = useState([]);
 
 	const getRainfall = () => {
 		setIsLoading(true);
