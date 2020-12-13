@@ -31,7 +31,7 @@ const BarSlider = ({
 		return sliderWidth * dragPercent;
 	}, [ minValue, range, sliderWidth, value ]);
 
-	const calculateValueFromPosition = currentX => {
+	const setValueFromPosition = currentX => {
 		const percentDragged = currentX / sliderWidth;
 		const dragValue = range * percentDragged;
 		const value = minValue + dragValue;
@@ -52,7 +52,7 @@ const BarSlider = ({
 
 		const absolutePosition = updatedX - boundaries.left;
 
-		calculateValueFromPosition(absolutePosition);
+		setValueFromPosition(absolutePosition);
 	};
 
 	const handlePanStart = a => {
@@ -74,6 +74,27 @@ const BarSlider = ({
 			});
 		}
 	}, [ handleRef, barRef, resizeCount ]);
+
+	useEffect(() => {
+		if (barRef.current) {
+			const barRefElement = barRef.current;
+			let handleWidthAdjustment = 0;
+			if (handleRef.current) {
+				const { width } = handleRef.current.getClientRects()[0] || {};
+				handleWidthAdjustment = width / 2;
+			}
+
+			const handleClick = event => {
+				const adjustedPosition = event.x - boundaries.left - handleWidthAdjustment;
+				setValueFromPosition(adjustedPosition);
+			};
+
+
+			barRefElement.addEventListener("click", handleClick);
+
+			return () => barRefElement.removeEventListener("click", handleClick);
+		}
+	}, [ barRef, handleRef, boundaries.left, setValueFromPosition ])
 
 	useEffect(() => {
 		const handleResize = () => setResizeCount(resizeCount + 1);
