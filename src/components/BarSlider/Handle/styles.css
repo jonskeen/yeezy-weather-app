@@ -5,3 +5,7 @@
     border: solid 1px var(--color-dark);
     border-radius: 50%;
 }
+
+.handle:hover {
+    cursor: grab;
+}
