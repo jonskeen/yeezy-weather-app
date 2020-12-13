@@ -10,4 +10,7 @@
 
     --border-border-default: solid 1px;
     --border-radius-default: 10px;
+
+    --height-header-d: 4rem;
+    --height-header-m: 3rem;
 }

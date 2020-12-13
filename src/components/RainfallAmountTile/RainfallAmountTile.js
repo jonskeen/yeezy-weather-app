@@ -2,22 +2,22 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { VictoryBar, VictoryChart, VictoryAxis } from "victory";
+import { isNonEmptyString } from "utils";
 import LoadingIndicator from "components/LoadingIndicator";
 import PaddedCell from "components/PaddedCell";
 
 import styles from "./styles.css";
 
 
-const RainfallAmountTile = ({ loading, data }) => {
+const RainfallAmountTile = ({ loading, data, className }) => {
 	return (
-		<div data-component="RainfallAmountTile">
-			<PaddedCell>
-				{loading
-					? (
-						<LoadingIndicator/>
-					)
-					: (
-						<VictoryChart domainPadding={20} padding={{ left: 55, top: 10, bottom: 30, right: 10 }}>
+		<PaddedCell dataComponent="RainfallAmountTile" className={isNonEmptyString(className) ? className : ""}>
+			{loading
+				? <LoadingIndicator/>
+				: (
+					<div className={styles.layout}>
+						<h2 className={styles.title}>Rainfall Amount</h2>
+						<VictoryChart domainPadding={20} padding={{ left: 55, top: 10, bottom: 60, right: 10 }}>
 							<VictoryAxis tickFormat={x => moment().add(x, "days").format("dd")} />
 							<VictoryAxis dependentAxis label={"l\\m2"} style={{
 									axisLabel: { padding: 40 }
@@ -28,10 +28,10 @@ const RainfallAmountTile = ({ loading, data }) => {
 					            }}
 							/>
 						</VictoryChart>
-					)
-				}
-			</PaddedCell>
-		</div>
+					</div>
+				)
+			}
+		</PaddedCell>
     );
 };
 

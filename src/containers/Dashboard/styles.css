@@ -61,3 +61,11 @@
         display: none;
     }
 }
+
+.dashboardTile {
+    //height: calc(25vh - var(--height-header-m) - var(--spacing-v-base));
+
+    @media (--medium) {
+        height: calc(50vh - var(--height-header-d) - var(--spacing-v-base));
+    }
+}

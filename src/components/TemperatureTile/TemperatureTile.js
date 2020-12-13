@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
-import { isFunction } from "utils";
+import { isFunction, isNonEmptyString } from "utils";
 import { useRangeBoundValue } from "hooks";
 import BarSlider from "components/BarSlider";
 import InputTileHeading from "components/InputTileHeading";
@@ -11,7 +11,8 @@ import styles from "./styles.css";
 
 const TemperatureTile = ({
 	onChange,
-	defaultValue
+	defaultValue,
+	className
 }) => {
 	const minValue = 10;
 	const maxValue = 35;
@@ -32,7 +33,7 @@ const TemperatureTile = ({
 	}, [ onChange, temperature ]);
 
 	return (
-		<PaddedCell>
+		<PaddedCell dataComponent="TemperatureTile" className={isNonEmptyString(className) ? className : ""}>
 			<InputTileHeading label="Temperature" unit="&deg;C" value={temperature} />
 			<BarSlider minValue={minValue} maxValue={maxValue} onChange={handleChange} value={temperature} />
 		</PaddedCell>

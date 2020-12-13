@@ -2,4 +2,7 @@
     --font-body: 'Quicksand', sans-serif;
     --font-size-default-d: 16px;
     --font-size-default-m: 14px;
+
+    --font-size-header-d: 2em;
+    --font-size-header-m: 1.5em;
 }

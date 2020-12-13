@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
-import { isFunction } from "utils";
+import { isFunction, isNonEmptyString } from "utils";
 import { useRangeBoundValue } from "hooks";
 import BarSlider from "components/BarSlider";
 import PaddedCell from "components/PaddedCell";
@@ -11,7 +11,8 @@ import styles from "./styles.css";
 
 const PressureTile = ({
 	onChange,
-	defaultValue
+	defaultValue,
+	className
 }) => {
 	const minValue = 970;
 	const maxValue = 1030;
@@ -32,7 +33,7 @@ const PressureTile = ({
 	}, [ onChange, pressure ])
 
 	return (
-		<PaddedCell>
+		<PaddedCell dataComponent="PressureTile" className={isNonEmptyString(className) ? className : ""}>
 			<InputTileHeading label="Pressure" value={pressure} unit="hPa" />
 			<BarSlider minValue={minValue} maxValue={maxValue} onChange={handleChange} value={pressure} />
 		</PaddedCell>

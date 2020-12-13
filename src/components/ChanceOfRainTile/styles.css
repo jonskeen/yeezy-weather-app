@@ -1,3 +1,11 @@
-.chanceOfRainTile {
+.title {
+    text-align: center;
+}
 
+.layout {
+    align-content: stretch;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
 }

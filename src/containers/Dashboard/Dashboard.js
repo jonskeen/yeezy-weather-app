@@ -25,20 +25,31 @@ const Dashboard = () => {
 	}, [ setTemperature ]);
 
 	const pressureTile = useMemo(() => {
-		return <PressureTile key="pressure" onChange={handlePressureChange} defaultValue={pressure} />;
+		return (
+			<PressureTile onChange={handlePressureChange}
+		                     defaultValue={pressure}
+		                     className={styles.dashboardTile}
+			/>
+		);
 	}, [ handlePressureChange, pressure ]);
 
 	const temperatureTile = useMemo(() => {
-		return <TemperatureTile onChange={handleTemperatureChange} defaultValue={temperature} />;
+		return (
+			<TemperatureTile onChange={handleTemperatureChange}
+			                 defaultValue={temperature}
+			                 className={styles.dashboardTile}
+			/>
+		);
 	}, [ handleTemperatureChange, temperature ]);
 
 	const amountOfRainCell = useMemo(() => {
-		return <RainfallAmountTile loading={isLoading} data={rainfallByDay} />;
+		return <RainfallAmountTile loading={isLoading} data={rainfallByDay} className={styles.dashboardTile} />;
 	}, [ isLoading, rainfallByDay ]);
 
 	const chanceOfRainTile = useMemo(() => {
 		return (
-			<ChanceOfRainTile loading={isLoading}
+			<ChanceOfRainTile className={styles.dashboardTile}
+			                  loading={isLoading}
 			                  data={rainfallByDay}
 			                  pressure={pressure}
 			                  temperature={temperature}

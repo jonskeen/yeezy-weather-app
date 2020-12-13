@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 import {
 	VictoryGroup,
 	VictoryChart,
@@ -7,17 +8,24 @@ import {
 	VictoryArea,
 	VictoryLegend
 } from "victory";
-import { isNonEmptyArray, isNonEmptyObject, calculateChanceOfRain, isNumber } from "utils";
+import {
+	isNonEmptyArray,
+	isNonEmptyObject,
+	calculateChanceOfRain,
+	isNumber,
+	isNonEmptyString
+} from "utils";
 import LoadingIndicator from "components/LoadingIndicator";
 import PaddedCell from "components/PaddedCell";
-import moment from "moment";
 
+import styles from "./styles.css";
 
 const ChanceOfRainTile = ({
 	loading,
 	data: rainfallData,
 	temperature,
-	pressure
+	pressure,
+	className
 }) => {
 	const chanceOfRainData = useMemo(() => {
 		const lowerBoundSeries = [];
@@ -49,13 +57,21 @@ const ChanceOfRainTile = ({
 	const colorScale = [ "#004c8e", "#016ac8", "#012c60" ]
 
 	return (
-		<div data-component="RainfallAmountTile">
-			<PaddedCell>
-				{loading
-					? <LoadingIndicator />
-					: hasData
-						? (
-							<VictoryChart padding={{ top: 10, right: 10, bottom: 80, left: 40 }} animate={{ duration: 1000 }} domain={{x: [1, 7], y: [0, 100]}} >
+		<PaddedCell dataComponent="RainfallAmountTile" className={isNonEmptyString(className) ? className : ""}>
+			{loading
+				? <LoadingIndicator />
+				: hasData
+					? (
+						<div className={styles.layout}>
+							<h2 className={styles.title}>Chance of Rain</h2>
+							<VictoryChart
+								animate={{ duration: 1000 }}
+								domain={{
+									x: [ 1, 7 ], y: [ 0, 100 ],
+								}}
+								padding={{ top: 10, right: 10, bottom: 90, left: 40, }}
+								// height={"100%"}
+							>
 								<VictoryAxis dependentAxis tickFormat={y => `${y}%`} />
 								<VictoryAxis tickFormat={x => moment().add(x, "days").format("dd")} />
 								<VictoryGroup colorScale={colorScale}>
@@ -64,20 +80,19 @@ const ChanceOfRainTile = ({
 									<VictoryArea data={chanceOfRainData.lowerBound} interpolation={"basis"}  />
 								</VictoryGroup>
 
-								<VictoryLegend x={100} y={270}
+								<VictoryLegend x={100} y={240}
 								               orientation="horizontal"
-								               gutter={15}
 								               colorScale={colorScale}
 								               data={[
 									               { name: "Upper Bound" }, { name: "Mean" }, { name: "Lower Bound" }
 								               ]}
 								/>
 							</VictoryChart>
-						)
-						: <span>There was a problem pulling data</span>
-				}
-			</PaddedCell>
-		</div>
+						</div>
+					)
+					: <span>There was a problem pulling data</span>
+			}
+		</PaddedCell>
 	);
 };
 

@@ -8,12 +8,12 @@ import styles from './App.css';
 
 const App = () => {
 	return (
-		<div className={styles.app}>
-			<header className={styles.appHeader}>
-				Weather Dashboard
-			</header>
+		<div>
+			<header className={styles.appHeader}>Weather Dashboard</header>
 
-			<Dashboard />
+			<div className={styles.mainContent}>
+				<Dashboard />
+			</div>
 		</div>
 	);
 };
