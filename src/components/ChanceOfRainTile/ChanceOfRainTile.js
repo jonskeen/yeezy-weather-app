@@ -1,6 +1,12 @@
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import { VictoryGroup, VictoryChart, VictoryAxis, VictoryArea } from "victory";
+import {
+	VictoryGroup,
+	VictoryChart,
+	VictoryAxis,
+	VictoryArea,
+	VictoryLegend
+} from "victory";
 import { isNonEmptyArray, isNonEmptyObject, calculateChanceOfRain, isNumber } from "utils";
 import LoadingIndicator from "components/LoadingIndicator";
 import PaddedCell from "components/PaddedCell";
@@ -40,6 +46,7 @@ const ChanceOfRainTile = ({
 	}, [ pressure, rainfallData, temperature ]);
 
 	const hasData = isNonEmptyObject(chanceOfRainData);
+	const colorScale = [ "#004c8e", "#016ac8", "#012c60" ]
 
 	return (
 		<div data-component="RainfallAmountTile">
@@ -48,14 +55,23 @@ const ChanceOfRainTile = ({
 					? <LoadingIndicator />
 					: hasData
 						? (
-							<VictoryChart animate={{ duration: 1000 }} domain={{x: [1, 7], y: [0, 100]}} >
+							<VictoryChart padding={{ top: 10, right: 10, bottom: 80, left: 40 }} animate={{ duration: 1000 }} domain={{x: [1, 7], y: [0, 100]}} >
 								<VictoryAxis dependentAxis tickFormat={y => `${y}%`} />
 								<VictoryAxis tickFormat={x => moment().add(x, "days").format("dd")} />
-								<VictoryGroup colorScale="blue">
+								<VictoryGroup colorScale={colorScale}>
 									<VictoryArea data={chanceOfRainData.upperBound} interpolation={"basis"} />
 									<VictoryArea data={chanceOfRainData.mean} interpolation={"basis"} />
 									<VictoryArea data={chanceOfRainData.lowerBound} interpolation={"basis"}  />
 								</VictoryGroup>
+
+								<VictoryLegend x={100} y={270}
+								               orientation="horizontal"
+								               gutter={15}
+								               colorScale={colorScale}
+								               data={[
+									               { name: "Upper Bound" }, { name: "Mean" }, { name: "Lower Bound" }
+								               ]}
+								/>
 							</VictoryChart>
 						)
 						: <span>There was a problem pulling data</span>
