@@ -18,6 +18,7 @@ const BarSlider = ({
 	const handleRef = useRef(null);
 	const [ boundaries, setBoundaries ] = useState({ left: 0, right: 0 });
 	const [ initialX, setInitialX ] = useState(0);
+	const [ resizeCount, setResizeCount ] = useState(0);
 	const minValue = parseInt(incomingMinValue, 10);
 	const maxValue = parseInt(incomingMaxValue, 10); // todo: ensure max > min
 	const range = useMemo(() => maxValue - minValue, [ maxValue, minValue ]);
@@ -72,7 +73,15 @@ const BarSlider = ({
 				right: barRight - handleWidth
 			});
 		}
-	}, [ handleRef, barRef ]);
+	}, [ handleRef, barRef, resizeCount ]);
+
+	useEffect(() => {
+		const handleResize = () => setResizeCount(resizeCount + 1);
+
+		window.addEventListener("resize", handleResize);
+
+		return () => window.removeEventListener("resize", handleResize);
+	}, [ resizeCount ]);
 
     return (
 		<div data-component="BarSlider" ref={barRef} className={styles.barSlider}>
