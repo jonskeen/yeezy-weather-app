@@ -65,12 +65,12 @@ const ChanceOfRainTile = ({
 						<div className={styles.layout}>
 							<h2 className={styles.title}>Chance of Rain</h2>
 							<VictoryChart
-								animate={{ duration: 1000 }}
+								animate={{ duration: 300 }}
 								domain={{
 									x: [ 1, 7 ], y: [ 0, 100 ],
 								}}
 								padding={{ top: 10, right: 10, bottom: 90, left: 40, }}
-								// height={"100%"}
+								height={"250"}
 							>
 								<VictoryAxis dependentAxis tickFormat={y => `${y}%`} />
 								<VictoryAxis tickFormat={x => moment().add(x, "days").format("dd")} />
@@ -80,7 +80,7 @@ const ChanceOfRainTile = ({
 									<VictoryArea data={chanceOfRainData.lowerBound} interpolation={"basis"}  />
 								</VictoryGroup>
 
-								<VictoryLegend x={100} y={240}
+								<VictoryLegend x={100} y={185}
 								               orientation="horizontal"
 								               colorScale={colorScale}
 								               data={[
@@ -90,7 +90,7 @@ const ChanceOfRainTile = ({
 							</VictoryChart>
 						</div>
 					)
-					: <span>There was a problem pulling data</span>
+					: <span>There was a problem calculating the chance of rain</span>
 			}
 		</PaddedCell>
 	);

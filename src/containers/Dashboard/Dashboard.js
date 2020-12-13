@@ -24,40 +24,6 @@ const Dashboard = () => {
 		setTemperature(value);
 	}, [ setTemperature ]);
 
-	const pressureTile = useMemo(() => {
-		return (
-			<PressureTile onChange={handlePressureChange}
-		                     defaultValue={pressure}
-		                     className={styles.dashboardTile}
-			/>
-		);
-	}, [ handlePressureChange, pressure ]);
-
-	const temperatureTile = useMemo(() => {
-		return (
-			<TemperatureTile onChange={handleTemperatureChange}
-			                 defaultValue={temperature}
-			                 className={styles.dashboardTile}
-			/>
-		);
-	}, [ handleTemperatureChange, temperature ]);
-
-	const amountOfRainCell = useMemo(() => {
-		return <RainfallAmountTile loading={isLoading} data={rainfallByDay} className={styles.dashboardTile} />;
-	}, [ isLoading, rainfallByDay ]);
-
-	const chanceOfRainTile = useMemo(() => {
-		return (
-			<ChanceOfRainTile className={styles.dashboardTile}
-			                  loading={isLoading}
-			                  data={rainfallByDay}
-			                  pressure={pressure}
-			                  temperature={temperature}
-			/>
-		);
-	}, [ isLoading, rainfallByDay, pressure, temperature ]);
-
-
 	const getRainfall = () => {
 		setIsLoading(true);
 
@@ -77,29 +43,6 @@ const Dashboard = () => {
 			});
 	};
 
-	const renderDesktopLayout = (
-		<div className={`${styles.layout} ${styles.desktop}`}>
-			<div className={styles.row}>
-				{pressureTile}
-				{chanceOfRainTile}
-			</div>
-
-			<div className={styles.row}>
-				{temperatureTile}
-				{amountOfRainCell}
-			</div>
-		</div>
-	);
-
-	const renderMobileLayout = (
-		<div className={`${styles.layout} ${styles.mobile}`}>
-			{pressureTile}
-			{temperatureTile}
-			{chanceOfRainTile}
-			{amountOfRainCell}
-		</div>
-	);
-
 	useEffect(() => {
 		const doIt = () => {
 			getRainfall();
@@ -111,8 +54,26 @@ const Dashboard = () => {
     return (
 		<div data-component="Dashboard">
 			<CommonPadding>
-				{renderMobileLayout} {/* separate layouts allow cell reordering without breaking screen-reader flows */}
-				{renderDesktopLayout}
+				<div className={styles.grid}>
+					<PressureTile onChange={handlePressureChange}
+					              defaultValue={pressure}
+					              className={styles.dashboardTile}
+					/>
+
+					<ChanceOfRainTile className={styles.dashboardTile}
+					                  loading={isLoading}
+					                  data={rainfallByDay}
+					                  pressure={pressure}
+					                  temperature={temperature}
+					/>
+
+					<TemperatureTile className={`${styles.dashboardTile} ${styles.temperatureTile}`}
+					                 onChange={handleTemperatureChange}
+					                 defaultValue={temperature}
+					/>
+
+					<RainfallAmountTile loading={isLoading} data={rainfallByDay} className={styles.dashboardTile} />
+				</div>
 			</CommonPadding>
 		</div>
     );

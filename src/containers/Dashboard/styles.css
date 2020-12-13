@@ -1,71 +1,25 @@
-.layout {
-    align-items: stretch;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    width: 100%;
+.grid {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: auto;
+    grid-row: auto;
+    grid-row-gap: var(--spacing-v-base);
 
     @media (--medium) {
-        align-items: center;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: var(--spacing-h-base);
     }
 }
 
-.layout > *.row {
-    width: 100%;
-}
-
-.row {
-    align-content: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-wrap: nowrap;
-
-    @media (--medium) {
-        flex-direction: row;
-    }
-}
-
-.layout > *:not(:last-of-type) {
-    margin-bottom: var(--spacing-v-base);
-}
-
-.row > * {
-    width: 100%;
-
-    @media (--medium) {
-        max-width: 50%;
-        min-width: 45%;
-    }
-}
-
-.row > *:first-child {
-    @media (--medium) {
-        margin-right: var(--spacing-h-base);
-    }
-}
-
-.desktop {
-    display: none;
-
-    @media (--medium) {
-        display: block;
-    }
-}
-
-.mobile {
-    @media (--medium) {
-        display: none;
-    }
+.temperatureTile {
+    grid-row-start: 2;
 }
 
 .dashboardTile {
-    //height: calc(25vh - var(--height-header-m) - var(--spacing-v-base));
 
     @media (--medium) {
         height: calc(50vh - var(--height-header-d) - var(--spacing-v-base));
+        min-height: 300px;
+        padding-bottom: 15px;
     }
 }
