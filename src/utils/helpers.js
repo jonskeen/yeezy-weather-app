@@ -29,3 +29,11 @@ export const calculateChanceOfRain = (pressure, temperature, amount) => {
 	return { lowerBound, mean, upperBound };
 }
 
+export const debounce = (callback, wait = 300) => {
+	let timeout;
+
+	return (...args) => {
+		clearTimeout(timeout);
+		timeout = setTimeout(() => callback(...args), wait);
+	};
+};
