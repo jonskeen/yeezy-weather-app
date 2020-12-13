@@ -1,8 +1,8 @@
 .barSlider {
-    background-color: darkred;
+    background-color: transparent;
     width: 100%;
     height: .625em;
-    border: solid 1px darkred;
+    border: solid 1px var(--color-border-default);
     position: relative;
     border-radius: 1em;
 }
