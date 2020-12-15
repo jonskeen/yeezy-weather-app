@@ -1,9 +1,18 @@
 .handle {
-    width: 1em;
-    height: 1em;
     background-color: var(--color-dark);
     border: solid 1px var(--color-dark);
     border-radius: 50%;
+    height: 1em;
+    width: 1em;
+}
+
+.handle:active,
+.handle:focus {
+    outline: none;
+}
+
+.handle:focus-visible {
+    box-shadow: 0 0 3px 2px var(--color-primary);
 }
 
 .handle:hover {

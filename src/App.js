@@ -3,7 +3,7 @@ import Dashboard from "containers/Dashboard";
 
 import "globals/css/variables/index.css";
 import "globals/css/index.global.css";
-import styles from './App.css';
+import styles from "./App.css";
 
 
 const App = () => {

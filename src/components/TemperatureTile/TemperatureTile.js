@@ -7,13 +7,9 @@ import InputTileHeading from "components/InputTileHeading";
 import PaddedCell from "components/PaddedCell";
 
 
-const TemperatureTile = ({
-	onChange,
-	defaultValue,
-	className
-}) => {
-	const minValue = 10;
-	const maxValue = 35;
+const TemperatureTile = ({ onChange, defaultValue, className }) => {
+	const minValue = 35;
+	const maxValue = 10;
 	const [ temperature, setTemperature ] = useRangeBoundValue(defaultValue, minValue, maxValue);
 
 	const handleChange = useCallback(({ value }) => {
@@ -39,7 +35,12 @@ const TemperatureTile = ({
 };
 
 TemperatureTile.propTypes = {
-	onChange: PropTypes.func
+	onChange: PropTypes.func,
+	defaultValue: PropTypes.oneOfType([
+		PropTypes.number,
+		PropTypes.string,
+	]),
+	className: PropTypes.string
 };
 
 export default TemperatureTile;

@@ -23,8 +23,9 @@ InputTileHeading.propTypes = {
 	label: PropTypes.string,
 	unit: PropTypes.string,
 	value: PropTypes.oneOfType([
-		PropTypes.string, PropTypes.number,
-	]),
+		PropTypes.string,
+		PropTypes.number,
+	])
 };
 
 export default InputTileHeading;

@@ -41,4 +41,6 @@ export const debounce = (callback, wait = 300) => {
 export const keyCodes = {
 	leftArrow: 37,
 	rightArrow: 39
-}
+};
+
+export const isArrowKey = keyCode => keyCode === keyCodes.leftArrow || keyCode === keyCodes.rightArrow;

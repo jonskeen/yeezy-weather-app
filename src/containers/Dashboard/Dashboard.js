@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDebouncedState } from "hooks";
 import { isNonEmptyString, fetchRainfall } from "utils";
 import ChanceOfRainTile from "components/ChanceOfRainTile";
 import CommonPadding from "components/CommonPadding";
 import PressureTile from "components/PressureTile";
-import TemperatureTile from "components/TemperatureTile";
 import RainfallAmountTile from "components/RainfallAmountTile";
+import TemperatureTile from "components/TemperatureTile";
 
 import styles from "./styles.css";
 
@@ -13,8 +13,8 @@ import styles from "./styles.css";
 const Dashboard = () => {
 	const [ isLoading, setIsLoading ] = useState(false);
 	const [ rainfallByDay, setRainfallByDay ] = useState([]);
-	const [ pressure, setPressure ] = useDebouncedState(null, 300);
-	const [ temperature, setTemperature ] = useDebouncedState(null, 300);
+	const [ pressure, setPressure ] = useDebouncedState(null);
+	const [ temperature, setTemperature ] = useDebouncedState(null);
 
 	const handlePressureChange = useCallback(({ value }) => {
 		setPressure(value);

@@ -6,8 +6,6 @@ import BarSlider from "components/BarSlider";
 import PaddedCell from "components/PaddedCell";
 import InputTileHeading from "components/InputTileHeading";
 
-import styles from "./styles.css";
-
 
 const PressureTile = ({
 	onChange,
@@ -35,13 +33,14 @@ const PressureTile = ({
 	return (
 		<PaddedCell dataComponent="PressureTile" className={isNonEmptyString(className) ? className : ""}>
 			<InputTileHeading label="Pressure" value={pressure} unit="hPa" />
-			<BarSlider minValue={minValue} maxValue={maxValue} onChange={handleChange} value={pressure} />
+			<BarSlider minValue={minValue} maxValue={maxValue} onChange={handleChange} value={pressure} fastStep="5" />
 		</PaddedCell>
 	);
 };
 
 PressureTile.propTypes = {
-	onChange: PropTypes.func
+	onChange: PropTypes.func,
+	defaultValue: PropTypes
 };
 
 export default PressureTile;

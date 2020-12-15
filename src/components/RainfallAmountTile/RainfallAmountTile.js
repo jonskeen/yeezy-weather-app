@@ -38,6 +38,15 @@ const RainfallAmountTile = ({ loading, data, className }) => {
     );
 };
 
-RainfallAmountTile.propTypes = {};
+RainfallAmountTile.propTypes = {
+	loading: PropTypes.bool,
+	data: PropTypes.arrayOf(
+		PropTypes.shape({
+			day: PropTypes.number.isRequired,
+			amount: PropTypes.number.isRequired
+		})
+	).isRequired,
+	className: PropTypes.string
+};
 
 export default RainfallAmountTile;

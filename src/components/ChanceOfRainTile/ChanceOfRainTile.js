@@ -20,6 +20,7 @@ import PaddedCell from "components/PaddedCell";
 
 import styles from "./styles.css";
 
+
 const ChanceOfRainTile = ({
 	loading,
 	data: rainfallData,
@@ -54,7 +55,7 @@ const ChanceOfRainTile = ({
 	}, [ pressure, rainfallData, temperature ]);
 
 	const hasData = isNonEmptyObject(chanceOfRainData);
-	const colorScale = [ "#004c8e", "#016ac8", "#012c60" ]
+	const colorScale = [ "#016ac8", "#004c8e", "#012c60" ]
 
 	return (
 		<PaddedCell dataComponent="RainfallAmountTile" className={isNonEmptyString(className) ? className : ""}>
@@ -96,6 +97,12 @@ const ChanceOfRainTile = ({
 	);
 };
 
-ChanceOfRainTile.propTypes = {};
+ChanceOfRainTile.propTypes = {
+	className: PropTypes.string,
+	data: PropTypes.object,
+	loading: PropTypes.bool,
+	pressure: PropTypes.number.isRequired,
+	temperature: PropTypes.number.isRequired
+};
 
 export default ChanceOfRainTile;

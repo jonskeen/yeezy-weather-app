@@ -1,25 +1,28 @@
 import React, { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import PropTypes from "prop-types";
-import { isFunction, keyCodes } from "utils";
+import { isFunction, keyCodes, isArrowKey } from "utils";
+import { useSafeRangeBounds } from "hooks";
 import Hammer from "react-hammerjs";
 import Handle from "components/BarSlider/Handle";
 
 import styles from "./styles.css";
-import { useSafeRangeBounds } from "hooks";
 
-// todo: click-to-set-value
-// todo: keyboard nav
+
 const BarSlider = ({
+	fastStep,
 	minValue: incomingMinValue,
 	maxValue: incomingMaxValue,
 	onChange,
-	value
+	step,
+	value: incomingValue
 }) => {
+	const value = useMemo(() => parseInt(incomingValue, 10), [incomingValue]);
 	const barRef = useRef(null);
 	const handleRef = useRef(null);
 	const [ boundaries, setBoundaries ] = useState({ left: 0, right: 0 });
 	const [ initialX, setInitialX ] = useState(0);
 	const [ resizeCount, setResizeCount ] = useState(0);
+	const [ isFastStep, setIsFastStep ] = useState(false);
 	const [ minValue, maxValue ] = useSafeRangeBounds(incomingMinValue, incomingMaxValue);
 	const range = useMemo(() => maxValue - minValue, [ maxValue, minValue ]);
 	const sliderWidth = useMemo(() => boundaries.right - boundaries.left, [ boundaries.left, boundaries.right ]);
@@ -82,7 +85,7 @@ const BarSlider = ({
 		}
 	}, [ handleRef, barRef, resizeCount ]);
 
-	useEffect(() => {
+	useEffect(() => { /* click-to-set-value handling */
 		if (barRef.current) {
 			const barRefElement = barRef.current;
 			let handleWidthAdjustment = 0;
@@ -96,27 +99,51 @@ const BarSlider = ({
 				setValueFromPosition(adjustedPosition);
 			};
 
+			barRefElement.addEventListener("click", handleClick);
+
+			return () => barRefElement.removeEventListener("click", handleClick);
+		}
+	}, [ boundaries.left, setValueFromPosition ])
+
+	useEffect(() => { /* left/right arrow handling */
+		if (handleRef.current) {
+			const handleElement = handleRef.current;
+
 			const handleKeydown = ({ keyCode }) => {
-				if (keyCode === keyCodes.leftArrow) {
-					notifyParent(value - 1);
-				} else if (keyCode === keyCodes.rightArrow) {
-					notifyParent(value + 1);
+				if (isArrowKey(keyCode)) {
+					const increment = isFastStep
+						? parseInt(fastStep, 10)
+						: parseInt(step, 10);
+
+					if (keyCode === keyCodes.leftArrow) {
+						const updatedValue = value - increment;
+						notifyParent(Math.max(updatedValue, minValue));
+					} else if (keyCode === keyCodes.rightArrow) {
+						const updatedValue = value + increment;
+						notifyParent(Math.min(updatedValue, maxValue));
+					}
+
+					setIsFastStep(true)
 				}
 			}
 
-			window.addEventListener("keydown", handleKeydown);
+			const handleKeyup = ({ keyCode }) => {
+				if (isArrowKey(keyCode)) {
+					setIsFastStep(false);
+				}
+			}
 
-
-			barRefElement.addEventListener("click", handleClick);
+			handleElement.addEventListener("keydown", handleKeydown);
+			handleElement.addEventListener("keyup", handleKeyup);
 
 			return () => {
-				window.removeEventListener("keydown", handleKeydown);
-				barRefElement.removeEventListener("click", handleClick);
+				handleElement.removeEventListener("keydown", handleKeydown);
+				handleElement.removeEventListener("keyup", handleKeyup);
 			}
 		}
-	}, [ barRef, handleRef, boundaries.left, setValueFromPosition, notifyParent, value ])
+	}, [ fastStep, isFastStep, maxValue, minValue, notifyParent, step, value ]);
 
-	useEffect(() => {
+	useEffect(() => { /* adjust handle position on resize */
 		const handleResize = () => setResizeCount(resizeCount + 1);
 
 		window.addEventListener("resize", handleResize);
@@ -136,14 +163,31 @@ const BarSlider = ({
 };
 
 BarSlider.propTypes = {
-	minValue: PropTypes.oneOfType([
+	fastStep: PropTypes.oneOfType([
 		PropTypes.number,
 		PropTypes.string,
 	]),
+	minValue: PropTypes.oneOfType([
+		PropTypes.number,
+		PropTypes.string,
+	]).isRequired,
 	maxValue: PropTypes.oneOfType([
 		PropTypes.number,
 		PropTypes.string,
+	]).isRequired,
+	onChange: PropTypes.func.isRequired,
+	step: PropTypes.oneOfType([
+		PropTypes.number,
+		PropTypes.string,
+	]),
+	value: PropTypes.oneOfType([
+		PropTypes.number
 	])
+};
+
+BarSlider.defaultProps = {
+	step: 1,
+	fastStep: 3
 };
 
 export default BarSlider;

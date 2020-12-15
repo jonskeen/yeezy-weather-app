@@ -19,7 +19,9 @@ const PaddedCell = ({ children, dataComponent, className: incomingClassName }) =
 };
 
 PaddedCell.propTypes = {
-	children: PropTypes.node
+	children: PropTypes.node,
+	className: PropTypes.string,
+	dataComponent: PropTypes.string
 };
 
 export default PaddedCell;

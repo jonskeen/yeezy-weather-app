@@ -1,13 +1,10 @@
 .grid {
     display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: auto;
-    grid-row: auto;
     grid-row-gap: var(--spacing-v-base);
 
     @media (--medium) {
-        grid-template-columns: 1fr 1fr;
         grid-column-gap: var(--spacing-h-base);
+        grid-template-columns: 1fr 1fr;
     }
 }
 
@@ -19,7 +16,7 @@
 
     @media (--medium) {
         height: calc(50vh - var(--height-header-d) - var(--spacing-v-base));
-        min-height: 300px;
-        padding-bottom: 15px;
+        min-height: 18.75rem;
+        padding-bottom: var(--spacing-v-base);
     }
 }
