@@ -17,6 +17,50 @@ const postCssPlugins = [
 	}),
 ];
 
+const postCss = {
+	test: /\.css$/,
+	exclude: [
+		/\.(min|global).css$/,
+		/node_modules\/.*/,
+	],
+	use: [
+		require.resolve('style-loader'),
+		{
+			loader: require.resolve('css-loader'),
+			options: {
+				importLoaders: 1,
+				modules: {
+					localIdentName: '[path][name]___[local]',
+				},
+			},
+		},
+		{
+			loader: require.resolve('postcss-loader'),
+			options: {
+				ident: 'postcss',
+				plugins: () => postCssPlugins,
+			},
+		},
+	],
+};
+
+const globalCssLoader = {
+	test: [
+		/node_modules\/.*\/dist\/.*.css/,
+		/\.(min|global).css$/
+	],
+	use: [
+		{
+			loader: 'style-loader',
+			options: { injectType: "linkTag" }
+		},
+		{
+			loader: 'file-loader',
+			options: { outputPath: 'static/css' }
+		}
+	]
+};
+
 const babelifyScripts = {
 	test: /\.(js|mjs|jsx|ts|tsx)$/,
 	include: [
@@ -31,13 +75,8 @@ const babelifyScripts = {
 		configFile: false,
 		presets: [require.resolve('babel-preset-react-app')],
 		plugins: [
-			require.resolve("babel-plugin-styled-components"),
 			require.resolve("@babel/plugin-proposal-optional-chaining"),
 			require.resolve("@babel/plugin-transform-arrow-functions"),
-			[
-				require.resolve('babel-plugin-named-asset-import'),
-				{ loaderMap: { svg: { ReactComponent: '@svgr/webpack?-svgo,+ref![path]' } } }
-			]
 		],
 		cacheDirectory: true,
 		cacheCompression: false,
@@ -70,5 +109,7 @@ const babelifyScriptsExcludeRuntime = {
 module.exports = {
 	postCssPlugins,
 	babelifyScripts,
-	babelifyScriptsExcludeRuntime
+	babelifyScriptsExcludeRuntime,
+	postCss,
+	globalCssLoader
 };
