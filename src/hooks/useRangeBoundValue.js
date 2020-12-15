@@ -1,7 +1,10 @@
 import { useCallback, useState } from "react";
 import { isNumber } from "utils";
+import { useSafeRangeBounds } from "hooks/useSafeRangeBounds";
 
-export const useRangeBoundValue = (initialValue, minValue, maxValue) => {
+export const useRangeBoundValue = (initialValue, incomingMinValue, incomingMaxValue) => {
+	const [ minValue, maxValue ] = useSafeRangeBounds(incomingMinValue, incomingMaxValue);
+
 	const isValueTooHigh = useCallback(value => {
 		return value > maxValue;
 	}, [ maxValue]);

@@ -6,8 +6,6 @@ import BarSlider from "components/BarSlider";
 import InputTileHeading from "components/InputTileHeading";
 import PaddedCell from "components/PaddedCell";
 
-import styles from "./styles.css";
-
 
 const TemperatureTile = ({
 	onChange,

@@ -37,3 +37,8 @@ export const debounce = (callback, wait = 300) => {
 		timeout = setTimeout(() => callback(...args), wait);
 	};
 };
+
+export const keyCodes = {
+	leftArrow: 37,
+	rightArrow: 39
+}

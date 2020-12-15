@@ -70,7 +70,7 @@ const ChanceOfRainTile = ({
 									x: [ 1, 7 ], y: [ 0, 100 ],
 								}}
 								padding={{ top: 10, right: 10, bottom: 90, left: 40, }}
-								height={"250"}
+								height={250}
 							>
 								<VictoryAxis dependentAxis tickFormat={y => `${y}%`} />
 								<VictoryAxis tickFormat={x => moment().add(x, "days").format("dd")} />

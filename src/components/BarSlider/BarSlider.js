@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import PropTypes from "prop-types";
-import { isFunction } from "utils";
+import { isFunction, keyCodes } from "utils";
 import Hammer from "react-hammerjs";
 import Handle from "components/BarSlider/Handle";
 
 import styles from "./styles.css";
+import { useSafeRangeBounds } from "hooks";
 
 // todo: click-to-set-value
 // todo: keyboard nav
@@ -19,8 +20,7 @@ const BarSlider = ({
 	const [ boundaries, setBoundaries ] = useState({ left: 0, right: 0 });
 	const [ initialX, setInitialX ] = useState(0);
 	const [ resizeCount, setResizeCount ] = useState(0);
-	const minValue = parseInt(incomingMinValue, 10);
-	const maxValue = parseInt(incomingMaxValue, 10); // todo: ensure max > min
+	const [ minValue, maxValue ] = useSafeRangeBounds(incomingMinValue, incomingMaxValue);
 	const range = useMemo(() => maxValue - minValue, [ maxValue, minValue ]);
 	const sliderWidth = useMemo(() => boundaries.right - boundaries.left, [ boundaries.left, boundaries.right ]);
 
@@ -31,15 +31,22 @@ const BarSlider = ({
 		return sliderWidth * dragPercent;
 	}, [ minValue, range, sliderWidth, value ]);
 
+	const notifyParent = useCallback(updatedValue => {
+		const didValueChange = updatedValue !== value;
+		const isValueValid = updatedValue >= minValue && updatedValue <= maxValue;
+
+		if (didValueChange && isValueValid && isFunction(onChange)) {
+			onChange({ value: updatedValue })
+		}
+	}, [ maxValue, minValue, onChange, value ]);
+
 	const setValueFromPosition = useCallback(currentX => {
 		const percentDragged = currentX / sliderWidth;
 		const dragValue = range * percentDragged;
 		const updatedValue = minValue + dragValue;
 
-		if (updatedValue !== value && isFunction(onChange)) {
-			onChange({ value: updatedValue })
-		}
-	}, [ minValue, onChange, range, sliderWidth, value ]);
+		notifyParent(updatedValue);
+	}, [ minValue, notifyParent, range, sliderWidth ]);
 
 	const handlePan = a => {
 		let updatedX = initialX + a.deltaX;
@@ -89,12 +96,25 @@ const BarSlider = ({
 				setValueFromPosition(adjustedPosition);
 			};
 
+			const handleKeydown = ({ keyCode }) => {
+				if (keyCode === keyCodes.leftArrow) {
+					notifyParent(value - 1);
+				} else if (keyCode === keyCodes.rightArrow) {
+					notifyParent(value + 1);
+				}
+			}
+
+			window.addEventListener("keydown", handleKeydown);
+
 
 			barRefElement.addEventListener("click", handleClick);
 
-			return () => barRefElement.removeEventListener("click", handleClick);
+			return () => {
+				window.removeEventListener("keydown", handleKeydown);
+				barRefElement.removeEventListener("click", handleClick);
+			}
 		}
-	}, [ barRef, handleRef, boundaries.left, setValueFromPosition ])
+	}, [ barRef, handleRef, boundaries.left, setValueFromPosition, notifyParent, value ])
 
 	useEffect(() => {
 		const handleResize = () => setResizeCount(resizeCount + 1);
@@ -108,7 +128,7 @@ const BarSlider = ({
 		<div data-component="BarSlider" ref={barRef} className={styles.barSlider}>
 			<Hammer onPanStart={handlePanStart} onPan={handlePan}>
 				<div className={styles.handleWrapper} style={{ left: `${dragHandlePosition}px` }}>
-					<Handle ref={handleRef} />
+					<Handle ref={handleRef} ariaValue={value} />
 				</div>
 			</Hammer>
 		</div>
