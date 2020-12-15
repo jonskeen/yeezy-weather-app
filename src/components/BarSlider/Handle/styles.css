@@ -1,6 +1,6 @@
 .handle {
-    background-color: var(--color-dark);
-    border: solid 1px var(--color-dark);
+    background-color: var(--color-lightest);
+    border: solid 3px var(--color-dark);
     border-radius: 50%;
     height: 1em;
     width: 1em;

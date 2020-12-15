@@ -1,5 +1,5 @@
 .barSlider {
-    background-color: transparent;
+    background-color: var(--color-lightest);
     border: solid 1px var(--color-border-default);
     border-radius: 1em;
     height: .625em;
@@ -11,4 +11,13 @@
     position: absolute;
     top: 50%;
     transform: translate3d(0, -50%, 0);
+}
+
+.background {
+    border-radius: 1em;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
 }

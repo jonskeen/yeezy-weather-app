@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import PropTypes from "prop-types";
-import { isFunction, keyCodes, isArrowKey } from "utils";
+import { isFunction, keyCodes, isArrowKey, isNonEmptyString } from "utils";
 import { useSafeRangeBounds } from "hooks";
 import Hammer from "react-hammerjs";
 import Handle from "components/BarSlider/Handle";
@@ -9,6 +9,7 @@ import styles from "./styles.css";
 
 
 const BarSlider = ({
+	backgroundClass,
 	fastStep,
 	minValue: incomingMinValue,
 	maxValue: incomingMaxValue,
@@ -153,6 +154,7 @@ const BarSlider = ({
 
     return (
 		<div data-component="BarSlider" ref={barRef} className={styles.barSlider}>
+			<div className={`${styles.background} ${isNonEmptyString(backgroundClass) ? backgroundClass : ""}`} />
 			<Hammer onPanStart={handlePanStart} onPan={handlePan}>
 				<div className={styles.handleWrapper} style={{ left: `${dragHandlePosition}px` }}>
 					<Handle ref={handleRef} ariaValue={value} />
@@ -163,6 +165,7 @@ const BarSlider = ({
 };
 
 BarSlider.propTypes = {
+	backgroundClass: PropTypes.string,
 	fastStep: PropTypes.oneOfType([
 		PropTypes.number,
 		PropTypes.string,
